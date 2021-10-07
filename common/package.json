@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "@hebbar_ticketing/common",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
