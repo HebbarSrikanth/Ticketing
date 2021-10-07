@@ -1,0 +1,34 @@
+#Deployment for the mongodb
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-db
+  template:
+    metadata:
+      labels:
+        app: auth-db
+    spec:
+      containers:
+        - name: auth-db
+          #offical image from the mongo
+          image: mongo
+
+---
+#Cluster service of auth-mongo to communte to other pods/auth service.
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-db-clu-srv
+spec:
+  selector:
+    app: auth-db
+  ports:
+    - name: auth-db
+      protocol: TCP
+      targetPort: 27017
+      port: 27017
