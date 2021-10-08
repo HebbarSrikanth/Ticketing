@@ -4,8 +4,8 @@ import { currentUser } from './routes/current-users';
 import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
-import { errorHandler } from './middleware/error-handler';
-import { NotFoundError } from './error/notFoundError';
+import { errorHandler, NotFoundError } from '@hebbar_ticketing/common';
+
 import 'express-async-errors';
 
 import cookieSession from 'cookie-session';

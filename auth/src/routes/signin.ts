@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { userRequestValidation } from '../middleware/requestValidation';
+import { userRequestValidation, BadRequest } from '@hebbar_ticketing/common';
 import { User } from '../models/user';
 import 'express-async-errors';
-import { BadRequest } from '../error/badRequest';
 import { PasswordService } from '../util/passwordService';
 import jwt from 'jsonwebtoken';
 

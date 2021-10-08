@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { User } from '../models/user';
-import { BadRequest } from '../error/badRequest';
+import { userRequestValidation, BadRequest } from '@hebbar_ticketing/common';
+
 import jwt from 'jsonwebtoken';
 import 'express-async-errors';
-import { userRequestValidation } from '../middleware/requestValidation';
 
 const router = express.Router();
 
