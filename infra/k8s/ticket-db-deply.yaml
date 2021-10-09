@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tickets-db
+  template:
+    metadata:
+      labels:
+        app: tickets-db
+    spec:
+      containers:
+        - name: tickets-db
+          image: mongo
+
+---
+#Mongo pod cluster service to interact with the ticket
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-db-clu-srv
+spec:
+  selector:
+    app: tickets-db
+  ports:
+    - name: tickets-db
+      protocol: TCP
+      targetPort: 27017
+      port: 27017

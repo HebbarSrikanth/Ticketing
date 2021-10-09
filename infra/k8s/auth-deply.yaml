@@ -16,6 +16,8 @@ spec:
         - name: auth
           image: auth
           env:
+            - name: MONGO_URI
+              value: 'mongodb://auth-db-clu-srv:27017/auth'
             #The env variable name is what we see in auth service when we do process.env.JWT_KEY
             - name: JWT_KEY
               #Get the value of the env from

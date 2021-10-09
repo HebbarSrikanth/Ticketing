@@ -6,7 +6,12 @@ const start = async () => {
     if (!process.env.JWT_KEY) {
       throw new Error('JWT secret key must be provided');
     }
-    await mongoose.connect(`mongodb://auth-db-clu-srv:27017/auth`);
+
+    if (!process.env.MONGO_URI) {
+      throw new Error('Mongo URI must be provided to connect to ticketing DB!');
+    }
+
+    await mongoose.connect(`${process.env.MONGO_URI}`);
     console.log('Connected to DB!!');
   } catch (err) {
     console.error(err);
