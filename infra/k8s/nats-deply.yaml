@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats-deply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats
+  template:
+    metadata:
+      labels:
+        app: nats
+    spec:
+      containers:
+        - name: nats
+          image: nats-streaming:0.17.0
+          args: [
+              #port number
+              '-p',
+              '4222',
+              #port for http monitoring
+              '-m',
+              '8222',
+              #Interval in below case every 5s at which server sends heartbeat to a client
+              '-hbi',
+              '5s',
+              #How long server waits for a heartbeat response
+              '-hbt',
+              '5s',
+              #Number of failed heartbeats before server closes the client connection
+              '-hbf',
+              '2',
+              # Enable STAN/client debugging output
+              '-SD',
+              #Cluster id
+              '-cid',
+              'ticketing',
+            ]
+
+---
+#Cluster service for nats
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats-clu-srv
+spec:
+  selector:
+    app: nats
+  ports:
+    - name: nats-client
+      protocol: TCP
+      targetPort: 4222
+      port: 4222
+    - name: nats-monitoring
+      protocol: TCP
+      targetPort: 8222
+      port: 8222
