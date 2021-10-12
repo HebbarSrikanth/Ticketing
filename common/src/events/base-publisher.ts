@@ -2,7 +2,7 @@ import { Stan } from 'node-nats-streaming';
 import { Subject } from './subject';
 
 interface TicketPublishEvent {
-  subject: Subject.TicketCreated;
+  subject: Subject;
   data: any;
 }
 
