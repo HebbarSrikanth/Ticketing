@@ -1,13 +1,13 @@
 //What is constant across many object write those function here and the other individual implementation is made as abstract
 import { Message, Stan } from 'node-nats-streaming';
-import Subject from './subject';
+import { Subject } from './subject';
 
 interface TicketCreateListener {
   subject: Subject;
   data: any;
 }
 
-export default abstract class listener<T extends TicketCreateListener> {
+export abstract class listener<T extends TicketCreateListener> {
   private client: Stan;
   abstract subject: T['subject'];
   abstract queueGroupName: string;

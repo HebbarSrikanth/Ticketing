@@ -1,12 +1,12 @@
 import { Stan } from 'node-nats-streaming';
-import Subject from './subject';
+import { Subject } from './subject';
 
 interface TicketPublishEvent {
   subject: Subject.TicketCreated;
   data: any;
 }
 
-abstract class BasePublisher<T extends TicketPublishEvent> {
+export abstract class BasePublisher<T extends TicketPublishEvent> {
   abstract subject: T['subject'];
   private client: Stan;
 
@@ -27,5 +27,3 @@ abstract class BasePublisher<T extends TicketPublishEvent> {
       });
     });
 }
-
-export default BasePublisher;
