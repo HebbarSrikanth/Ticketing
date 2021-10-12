@@ -16,6 +16,14 @@ spec:
         - name: tickets
           image: tickets
           env:
+            - name: NATS_CLUSTER_ID
+              value: ticketing
+            - name: NATS_URL
+              value: 'http://nats-clu-srv:4222'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: MONGO_URI
               value: 'mongodb://tickets-db-clu-srv:27017/tickets'
             - name: JWT_KEY

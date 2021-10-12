@@ -3,6 +3,8 @@ import { requestAuth, userRequestValidation } from '@hebbar_ticketing/common';
 import { body } from 'express-validator';
 import { Ticket } from '../models/tickets';
 import 'express-async-errors';
+import { TicketCreatedPublisher } from '../events/publisher/ticket-created-publish';
+import { natsWrapper } from '../natsWrapper';
 
 const router = express.Router();
 
@@ -26,6 +28,15 @@ router.post(
     });
 
     await ticket.save();
+
+    const ticketCreatedPublished = new TicketCreatedPublisher(natsWrapper.client);
+
+    await ticketCreatedPublished.publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: Number(ticket.price),
+      userId: ticket.userId,
+    });
 
     res.status(201).send(ticket);
   }

@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
 import mongoose from 'mongoose';
+import { natsWrapper } from '../../natsWrapper';
 
 describe('Test cases for updating the ticket', () => {
   it('Check if the ticket id exists, if not send 404 error', async () => {
@@ -78,5 +79,31 @@ describe('Test cases for updating the ticket', () => {
     expect(updatedResponse.status).toEqual(201);
     expect(updatedResponse.body.title).toEqual(toUpdateTicketTitle);
     expect(updatedResponse.body.price).toEqual('120');
+  });
+
+  it('Publish event is called after updation of a ticket', async () => {
+    const cookie = global.signin();
+
+    const saveTicket = await request(app).post(`/api/tickets`).set('Cookie', cookie).send({
+      title: 'Ticket - 1',
+      price: 100,
+    });
+
+    const ticketId = saveTicket.body.id;
+
+    const toUpdateTicketTitle = 'Ticket - 1 updated';
+    const updatedResponse = await request(app)
+      .put(`/api/tickets/${ticketId}`)
+      .send({
+        title: toUpdateTicketTitle,
+        price: 120,
+      })
+      .set('Cookie', cookie);
+
+    expect(updatedResponse.status).toEqual(201);
+    expect(updatedResponse.body.title).toEqual(toUpdateTicketTitle);
+    expect(updatedResponse.body.price).toEqual('120');
+
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
   });
 });

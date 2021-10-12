@@ -11,6 +11,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();
   for (let collection of collections) {
     await collection.deleteMany({});
@@ -21,6 +22,8 @@ afterAll(() => {
   mongo.stop();
   mongoose.disconnect();
 });
+
+jest.mock('../natsWrapper');
 
 declare global {
   var signin: () => string[];

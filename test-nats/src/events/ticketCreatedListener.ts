@@ -8,7 +8,7 @@ class TicketCreatedListener extends BaseListener<TicketCreatedEvent> {
   queueGroupName = 'ticketing-service';
 
   onMessage(data: TicketCreatedEvent['data'], msg: Message) {
-    console.log(`Event data - ${data} - ${msg.getSequence()}`);
+    console.log(`Event data - ${data} - ${msg.getSequence()} - ${msg.getData()}`);
     //Business logic
     msg.ack();
   }
