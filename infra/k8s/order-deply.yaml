@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-deply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: orders
+          image: orders
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_CLUSTER_ID
+              value: ticketing
+            - name: NATS_URL
+              value: 'http://nats-clu-srv:4222'
+            - name: MONGO_URI
+              value: 'mongodb://orders-db-clu-srv:27017/orders'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+
+---
+#Orders cluster service
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-clu-srv
+spec:
+  selector:
+    app: order
+  ports:
+    - name: orders
+      protocol: TCP
+      targetPort: 3000
+      port: 3000
