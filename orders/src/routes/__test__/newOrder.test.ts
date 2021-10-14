@@ -1,8 +1,9 @@
 import request from 'supertest';
-import { app } from '../../../app';
+import { app } from '../../app';
 import mongoose from 'mongoose';
 import { Ticket } from '../../models/tickets';
 import { Order } from '../../models/orders';
+import { NatsWapper } from '../../NatsWrapper';
 
 describe('Test case for creating a new Order', () => {
   it('Return 401 if the user is not authenticated', async () => {
@@ -86,5 +87,23 @@ describe('Test case for creating a new Order', () => {
     expect(res.status).toEqual(201);
     expect(tickets.length).toEqual(1);
     expect(orders.length).toEqual(1);
+  });
+
+  it('Published successfully', async () => {
+    let tickets = await Ticket.find({});
+    let orders = await Order.find({});
+
+    const ticket = Ticket.build({
+      title: 'Ticket - 1',
+      price: 120,
+    });
+    await ticket.save();
+
+    const res = await request(app)
+      .post('/api/orders')
+      .send({ ticketId: ticket.id })
+      .set('Cookie', global.signin());
+
+    expect(NatsWapper.client.publish).toHaveBeenCalled();
   });
 });

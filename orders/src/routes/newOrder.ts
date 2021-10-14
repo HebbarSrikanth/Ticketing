@@ -11,6 +11,8 @@ import { body } from 'express-validator';
 import mongoose from 'mongoose';
 import { Ticket } from '../models/tickets';
 import { Order } from '../models/orders';
+import { OrderCreatedPublish } from '../events/publisher/orderCreatedPublish';
+import { NatsWapper } from '../NatsWrapper';
 
 const router = express.Router();
 
@@ -52,6 +54,19 @@ router.post(
       ticket,
     });
     await newOrder.save();
+
+    //Publish the event to the NATS Streaming messaging server
+    const orderCreatedPublish = new OrderCreatedPublish(NatsWapper.client);
+    orderCreatedPublish.publish({
+      id: newOrder.id,
+      status: newOrder.status,
+      userId: newOrder.userId,
+      expiresAt: newOrder.expiresAt.toISOString(),
+      ticket: {
+        id: newOrder.ticket.id,
+        price: newOrder.ticket.price.toString(),
+      },
+    });
 
     res.status(201).send(newOrder);
   }

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../../../app';
+import { app } from '../../app';
 import { Order } from '../../models/orders';
 import { Ticket } from '../../models/tickets';
 

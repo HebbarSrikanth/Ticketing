@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { app } from './app';
 import 'express-async-errors';
+import { NatsWapper } from './NatsWrapper';
 
 const start = async () => {
   try {
@@ -20,6 +21,11 @@ const start = async () => {
       throw new Error('Mongo uri must be provided');
     }
 
+    await NatsWapper.connect(
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATS_CLIENT_ID,
+      process.env.NATS_URL
+    );
     await mongoose.connect(process.env.MONGO_URI);
   } catch (error) {
     console.log(error);

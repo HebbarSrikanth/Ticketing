@@ -1,8 +1,9 @@
 import request from 'supertest';
-import { app } from '../../../app';
+import { app } from '../../app';
 import mongoose from 'mongoose';
 import { Ticket } from '../../models/tickets';
 import { Order, OrderTypes } from '../../models/orders';
+import { NatsWapper } from '../../NatsWrapper';
 
 describe('Test case for deleting the details of Individual order', () => {
   it('Return 401 if the user is not authenticated', async () => {
@@ -65,5 +66,27 @@ describe('Test case for deleting the details of Individual order', () => {
     const order = await Order.findById(res.body.id);
     expect(orderDetails.status).toEqual(204);
     expect(order!.status).toEqual(OrderTypes.Cancelled);
+  });
+
+  it('Publish after the order has been cancelled', async () => {
+    const title = 'Ticket';
+    const ticket = Ticket.build({
+      price: 120,
+      title,
+    });
+    await ticket.save();
+
+    const cookie = global.signin();
+
+    const res = await request(app)
+      .post('/api/orders')
+      .set('Cookie', cookie)
+      .send({
+        ticketId: ticket.id,
+      })
+      .expect(201);
+
+    await request(app).delete(`/api/orders/${res.body.id}`).set('Cookie', cookie).expect(204);
+    expect(NatsWapper.client.publish).toBeCalled();
   });
 });

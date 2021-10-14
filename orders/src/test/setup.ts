@@ -10,6 +10,8 @@ beforeAll(async () => {
   await mongoose.connect(uri);
 });
 
+jest.mock('../NatsWrapper');
+
 beforeEach(async () => {
   const collections = await mongoose.connection.db.collections();
   for (let collection of collections) {

@@ -1,11 +1,11 @@
 import express from 'express';
 import { errorHandler, NotFoundError, currentUser } from '@hebbar_ticketing/common';
-import { newOrderRouter } from './src/routes/newOrder';
+import { newOrderRouter } from './routes/newOrder';
 import 'express-async-errors';
 import cookie from 'cookie-session';
-import { fetchIndividualOrderRouter } from './src/routes/fetchIndividualOrderDetails';
-import { fetchOrderOfIndividualUserRouter } from './src/routes/fetchOrdersforIndividualUser';
-import { deleteIndividualOrderRouter } from './src/routes/deleteIndividualOrder';
+import { fetchIndividualOrderRouter } from './routes/fetchIndividualOrderDetails';
+import { fetchOrderOfIndividualUserRouter } from './routes/fetchOrdersforIndividualUser';
+import { deleteIndividualOrderRouter } from './routes/deleteIndividualOrder';
 
 const app = express();
 app.use(express.json());
