@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import { app } from './app';
+import { OrderCancelledListener } from './events/listener/orderCancelledListener';
+import { OrderCreatedListener } from './events/listener/orderCreatedListener';
 import { natsWrapper } from './natsWrapper';
 
 const start = async () => {
@@ -34,6 +36,14 @@ const start = async () => {
       console.log('NATS Straming is about to close');
       process.exit();
     });
+
+    //Listen to order created event
+    const orderCreatedListener = new OrderCreatedListener(natsWrapper.client);
+    orderCreatedListener.listen();
+
+    //Listen to order cancelled event
+    const orderCancelledListener = new OrderCancelledListener(natsWrapper.client);
+    orderCancelledListener.listen();
 
     process.on('SIGINT', () => natsWrapper.client.close());
     //process.on('SIGKILL', () => natsWrapper.client.close());

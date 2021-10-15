@@ -4,6 +4,7 @@ import {
   NotFoundError,
   NotAuthenticatedError,
   userRequestValidation,
+  BadRequest,
 } from '@hebbar_ticketing/common';
 import { Ticket } from '../models/tickets';
 import { body } from 'express-validator';
@@ -31,6 +32,10 @@ router.put(
       throw new NotFoundError(`Ticket with the id ${ticketId} not found to update`);
     }
 
+    if (ticket.orderId !== undefined) {
+      throw new BadRequest('Ticket has been reserved');
+    }
+
     //If ticket is found but the owner of the ticket is different
     if (ticket.userId !== req.currentUser.id) {
       throw new NotAuthenticatedError();
@@ -50,6 +55,7 @@ router.put(
       price: Number(ticket.price),
       title: ticket.title,
       userId: ticket.userId,
+      version: ticket.version,
     });
 
     res.status(201).send(ticket);

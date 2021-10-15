@@ -24,6 +24,7 @@ router.delete('/api/orders/:id', requestAuth, async (req: Request, res: Response
   const orderCancelledPublish = new OrderCancelledPublisher(NatsWapper.client);
   orderCancelledPublish.publish({
     id: order.id,
+    version: order.version,
     ticket: {
       id: order.ticket.id,
     },

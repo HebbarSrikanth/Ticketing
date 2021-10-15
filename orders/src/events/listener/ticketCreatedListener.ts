@@ -1,9 +1,9 @@
-import { listener, Subject, TicketCreatedEvent } from '@hebbar_ticketing/common';
+import { BaseListener, Subject, TicketCreatedEvent } from '@hebbar_ticketing/common';
 import { Message } from 'node-nats-streaming';
 import { Ticket } from '../../models/tickets';
 import { queueGroupName } from './queueGroupName';
 
-export class TicketCreatedListener extends listener<TicketCreatedEvent> {
+export class TicketCreatedListener extends BaseListener<TicketCreatedEvent> {
   subject: Subject.TicketCreated = Subject.TicketCreated;
   queueGroupName = queueGroupName;
 

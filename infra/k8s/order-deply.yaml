@@ -40,7 +40,7 @@ metadata:
   name: orders-clu-srv
 spec:
   selector:
-    app: order
+    app: orders
   ports:
     - name: orders
       protocol: TCP
