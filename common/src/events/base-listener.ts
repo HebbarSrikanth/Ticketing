@@ -8,7 +8,7 @@ interface TicketCreateListener {
 }
 
 export abstract class BaseListener<T extends TicketCreateListener> {
-  private client: Stan;
+  protected client: Stan;
   abstract subject: T['subject'];
   abstract queueGroupName: string;
   protected ackWait = 5 * 1000;
