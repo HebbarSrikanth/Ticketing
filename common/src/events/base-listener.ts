@@ -7,7 +7,7 @@ interface TicketCreateListener {
   data: any;
 }
 
-export abstract class listener<T extends TicketCreateListener> {
+export abstract class BaseListener<T extends TicketCreateListener> {
   private client: Stan;
   abstract subject: T['subject'];
   abstract queueGroupName: string;
