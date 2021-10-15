@@ -47,6 +47,7 @@ describe('Test case for creating a new Order', () => {
     const ticket = Ticket.build({
       title: 'Ticket - 1',
       price: 120,
+      id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 
@@ -73,6 +74,7 @@ describe('Test case for creating a new Order', () => {
     const ticket = Ticket.build({
       title: 'Ticket - 1',
       price: 120,
+      id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 
@@ -96,6 +98,7 @@ describe('Test case for creating a new Order', () => {
     const ticket = Ticket.build({
       title: 'Ticket - 1',
       price: 120,
+      id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 

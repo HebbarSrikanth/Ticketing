@@ -22,6 +22,7 @@ describe('Test case for fetching the details of Individual order', () => {
     const ticket = Ticket.build({
       price: 120,
       title: 'Ticket',
+      id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 
@@ -41,6 +42,7 @@ describe('Test case for fetching the details of Individual order', () => {
     const ticket = Ticket.build({
       price: 120,
       title,
+      id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 

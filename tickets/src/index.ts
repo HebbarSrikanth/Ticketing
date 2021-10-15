@@ -29,6 +29,14 @@ const start = async () => {
 
     await mongoose.connect(`${process.env.MONGO_URI}`);
     console.log('Connected to ticketing DB!! successfully');
+
+    natsWrapper.client.on('close', () => {
+      console.log('NATS Straming is about to close');
+      process.exit();
+    });
+
+    process.on('SIGINT', () => natsWrapper.client.close());
+    //process.on('SIGKILL', () => natsWrapper.client.close());
   } catch (error) {
     console.log(error);
   }

@@ -22,6 +22,7 @@ describe('Test case for deleting the details of Individual order', () => {
 
   it('Return 401 if different user try to delete the order details', async () => {
     const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       price: 120,
       title: 'Ticket',
     });
@@ -46,6 +47,7 @@ describe('Test case for deleting the details of Individual order', () => {
     const ticket = Ticket.build({
       price: 120,
       title,
+      id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 
@@ -73,6 +75,7 @@ describe('Test case for deleting the details of Individual order', () => {
     const ticket = Ticket.build({
       price: 120,
       title,
+      id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 
