@@ -4,6 +4,7 @@ import 'express-async-errors';
 import { NatsWapper } from './NatsWrapper';
 import { TicketCreatedListener } from './events/listener/ticketCreatedListener';
 import { TicketUpdateListener } from './events/listener/ticketUpdatedListener';
+import { ExpirationCompletedListener } from './events/listener/expirationCompletedListener';
 
 const start = async () => {
   try {
@@ -45,6 +46,10 @@ const start = async () => {
     //Event listener whenever the new ticket is updated
     const ticketUpdateListener = new TicketUpdateListener(NatsWapper.client);
     ticketUpdateListener.listen();
+
+    //Event listener whenever the expiration is completed
+    const expirationCompletedListener = new ExpirationCompletedListener(NatsWapper.client);
+    expirationCompletedListener.listen();
   } catch (error) {
     console.log(error);
   }

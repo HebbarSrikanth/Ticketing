@@ -29,7 +29,7 @@ router.post(
   userRequestValidation,
   async (req: Request, res: Response) => {
     const { ticketId } = req.body;
-    const EXPIRES_TIME = 15 * 60;
+    const EXPIRES_TIME = 1 * 60;
 
     //Check if the ticket exists
     const ticket = await Ticket.findById(ticketId);
@@ -50,7 +50,7 @@ router.post(
     const newOrder = Order.build({
       status: OrderTypes.Created,
       userId: req.currentUser!.id,
-      expiresAt: new Date(),
+      expiresAt: expires,
       ticket,
     });
     await newOrder.save();
