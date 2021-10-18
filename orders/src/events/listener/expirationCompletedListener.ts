@@ -21,6 +21,7 @@ export class ExpirationCompletedListener extends BaseListener<ExpirationComplete
     }
 
     if (order.status === OrderTypes.Complete) {
+      console.log('Here after the cancellation');
       msg.ack();
       return;
     }

@@ -5,6 +5,7 @@ import { NatsWapper } from './NatsWrapper';
 import { TicketCreatedListener } from './events/listener/ticketCreatedListener';
 import { TicketUpdateListener } from './events/listener/ticketUpdatedListener';
 import { ExpirationCompletedListener } from './events/listener/expirationCompletedListener';
+import { PaymentCompletedListener } from './events/listener/paymentCompletedListener';
 
 const start = async () => {
   try {
@@ -50,6 +51,9 @@ const start = async () => {
     //Event listener whenever the expiration is completed
     const expirationCompletedListener = new ExpirationCompletedListener(NatsWapper.client);
     expirationCompletedListener.listen();
+
+    const paymentCompletedListener = new PaymentCompletedListener(NatsWapper.client);
+    paymentCompletedListener.listen();
   } catch (error) {
     console.log(error);
   }
