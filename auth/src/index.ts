@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { app } from './app';
 
 const start = async () => {
+  console.log('Start the auth service!!');
   try {
     if (!process.env.JWT_KEY) {
       throw new Error('JWT secret key must be provided');
