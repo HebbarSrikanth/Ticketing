@@ -1,0 +1,16 @@
+#Name of the test file
+name: test-payments
+
+#On what event this test file to be invoked
+on: [pull_request]
+
+#This section defines some number of thing we want to when pull event is triggerd
+jobs:
+#Startup VM , running on ubuntu
+  build:
+    runs-on: ubuntu-latest
+    #Steps that we need to do
+    steps:
+    #Take all the code out of our project
+      - uses: actions/checkout@v2
+      - run: cd payments && npm install && npm run test:ci
