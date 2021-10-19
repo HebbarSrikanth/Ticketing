@@ -4,10 +4,10 @@ import axios from 'axios';
 const UseRequest = ({ method, url, body, onSuccess }) => {
   const [errors, setError] = useState(null);
 
-  const doRequest = async () => {
+  const doRequest = async (data = {}) => {
     try {
       setError(null);
-      const res = await axios[method](url, body);
+      const res = await axios[method](url, { ...body, ...data });
 
       if (onSuccess) {
         onSuccess(res.data);
@@ -15,7 +15,6 @@ const UseRequest = ({ method, url, body, onSuccess }) => {
 
       return res.data;
     } catch (error) {
-      console.log(error);
       setError(
         <div className="alert alert-danger">
           <ul className="my-0">

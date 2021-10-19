@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.get('/api/tickets', async (req, res) => {
   console.log(`${req.method} - ${req.url}`);
-  const tickets = await Ticket.find({});
+  const tickets = await Ticket.find({
+    orderId: undefined,
+  });
 
   res.status(200).send(tickets);
 });

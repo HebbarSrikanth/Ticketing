@@ -21,7 +21,7 @@ const Signup = () => {
     e.preventDefault();
     if (email.trim() !== '' && password !== '' && confirmPassword !== '') {
       if (password.trim() === confirmPassword.trim()) {
-        const res = await doRequest();
+        await doRequest();
       }
     } else {
       console.log('All the fields are mandatory');

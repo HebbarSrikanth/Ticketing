@@ -1,7 +1,44 @@
 import initialRequest from '../service/initialRequest';
+import Link from 'next/link';
 
-const Index = ({ currentUser }) => {
-  return <h1>{currentUser ? `You're signed in ${currentUser.email}` : `You are not signed in`}</h1>;
+const Index = ({ tickets }) => {
+  const tableRows = tickets.map((ticket) => (
+    <tr key={ticket.id}>
+      <td>{ticket.title}</td>
+      <td>{ticket.price}</td>
+      <td>
+        <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+          <a>View</a>
+        </Link>
+      </td>
+    </tr>
+  ));
+
+  const tableDetails =
+    tableRows.length > 0 ? (
+      tableRows
+    ) : (
+      <tr>
+        <td>No Tickets available</td>
+      </tr>
+    );
+
+  return (
+    <>
+      <h1>Tickets</h1>
+      <table className="table table-striped table-bordered">
+        <caption>List of Tickets</caption>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>{tableDetails}</tbody>
+      </table>
+    </>
+  );
 };
 
 //Is the initial function that will run when
@@ -15,8 +52,8 @@ const Index = ({ currentUser }) => {
 
 Index.getInitialProps = async (context) => {
   const baseUrl = initialRequest(context);
-  const { data } = await baseUrl.get('/api/users/currentuser');
-  return data;
+  const { data } = await baseUrl.get('/api/tickets');
+  return { tickets: data };
 };
 
 export default Index;
